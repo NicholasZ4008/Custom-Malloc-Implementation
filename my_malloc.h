@@ -4,13 +4,13 @@
 #include "LinkedList/list.h"
 
 #define MEMORY_POOL_SIZE 1024
+#define BLOCK_SIZE 128 // Size of each block
+#define POOL_SIZE LIST_MAX_NUM_NODES // Total number of blocks in the pool
 
-typedef struct Block{
-    size_t size;
-    struct Block* left;
-    struct Block* right;
-
-} Block;
+typedef struct {
+    char data[BLOCK_SIZE]; // Memory space
+    bool isFree;           // Indicates if the block is free
+} MemoryBlock;
 
 //Initialize list of all blocks with linked list
 void mem_init();
