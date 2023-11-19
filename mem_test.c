@@ -15,6 +15,9 @@ int main(){
 
     char* charPtr = (char*)my_malloc(10 * sizeof(char));
     strcpy(charPtr, "Hello!");
+    
+    printf("int: %d\n", *intPtr);
+    printf("string: %s\n", charPtr);
 
     // Free allocated memory
     my_free(intPtr);
