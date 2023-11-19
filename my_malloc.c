@@ -10,20 +10,6 @@ void mem_init() {
     }
 }
 
-
-// void mem_init(size_t totalSize, size_t blockSize){
-//     List* memoryPool = List_create();
-//     // Divide totalSize by blockSize and initialize nodes
-//     for (size_t i = 0; i < totalSize / blockSize; ++i) {
-//         MemoryBlock* block = (MemoryBlock*)malloc(sizeof(MemoryBlock));
-//         block->blockSize = blockSize;
-//         block->isFree = true;
-//         List_append(memoryPool, block);
-//     }
-//     return memoryPool;
-// }
-
-
 //Give memory space to block
 void* my_malloc(size_t size) {
     if (size > BLOCK_SIZE) {
@@ -53,10 +39,3 @@ void my_free(void* block) {
         }
     }
 }
-
-
-//Free all allocated blocks of memory
-void my_free_all(){
-
-};
-
