@@ -5,9 +5,11 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include <math.h>
 #include "my_malloc.h"
 
 void test_basic_allocation_deallocation() {
+    mem_init();
     size_t block = 64;
     printf("Basic allocation of 1 block of %ld bytes:\n", block);
     void* ptr = my_malloc(block);
@@ -18,6 +20,7 @@ void test_basic_allocation_deallocation() {
 }
 
 void test_allocating_multiple_blocks() {
+    mem_init();
     size_t block = 64;
     printf("Basic allocation of 2 block of %ld bytes:\n", block);
     void* ptr1 = my_malloc(block);
@@ -33,6 +36,7 @@ void test_allocating_multiple_blocks() {
 }
 
 void test_allocating_large_memory() {
+    mem_init();
     size_t block = 300;
     printf("Allocation of 2 large blocks of %ld bytes\n", block);
     void* largePtr = my_malloc(block);
@@ -99,6 +103,7 @@ void test_allocate_integers() {
 }
 
 void test_mixed_allocation() {
+    mem_init();
     printf("Allocate for both strings and integers\n");
     size_t int_block = 2;
     printf("Int allocation: %ld*sizeof(int)\n", int_block);
@@ -123,7 +128,9 @@ void test_mixed_allocation() {
     printf("\n\n");
 }
 
-void test_stress_testing() {
+void test_stress_test_allocate_free_same_time() {
+    mem_init();
+
     size_t iterations = 1000;
     size_t block = 300;
     printf("Stress test of %ld blocks with size %ld\n", iterations, block);
@@ -135,8 +142,27 @@ void test_stress_testing() {
     printf("\n\n");
 }
 
-int main() {
+void test_stress_test_allocate_free_diff_time() {
     mem_init();
+
+    size_t block = BLOCK_SIZE;
+    size_t iterations = MEMORY_POOL_SIZE/block;
+    printf("Allocate %ld blocks of size %ld, then after allocating all free one by one\n", iterations, block);
+    mem_init();
+    void* ptrArray [iterations];
+    for (int i = 0; i < iterations; i++) {
+        ptrArray[i] = my_malloc(block);
+        assert(ptrArray[i] != NULL);
+    }
+    printf("Created %ld blocks\n", iterations);
+    for (int i = 0; i < iterations-1; i++) {
+        my_free(ptrArray[i]);
+    }
+    printf("Free'd %ld blocks", iterations);
+    printf("\n\n");
+}
+
+int main() {
     test_basic_allocation_deallocation();
     test_allocating_multiple_blocks();
     test_allocating_large_memory();
@@ -144,7 +170,8 @@ int main() {
     test_allocate_strings();
     test_allocate_integers();
     test_mixed_allocation();
-    test_stress_testing();
+    test_stress_test_allocate_free_same_time();
+    test_stress_test_allocate_free_diff_time();
 
 
     printf("All tests passed!\n");
