@@ -155,7 +155,7 @@ void test_stress_test_allocate_free_diff_time() {
         assert(ptrArray[i] != NULL);
     }
     printf("Created %ld blocks\n", iterations);
-    for (int i = 0; i < iterations-1; i++) {
+    for (int i = 0; i < iterations; i++) {
         my_free(ptrArray[i]);
     }
     printf("Free'd %ld blocks", iterations);
